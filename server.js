@@ -7,7 +7,7 @@ const db = mongoose.connection
 const mongoURI = process.env.MONGO_URI
 const PORT = process.env.PORT || 3001
 const User = require('./models/User')
-const userData = require('./data')
+const userData = require('./utilities/data')
 //connecting to my database
 //connecting to MongoDB
 mongoose.connect(mongoURI, { useNewUrlParser: true},
