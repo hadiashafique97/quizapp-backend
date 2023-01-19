@@ -8,6 +8,7 @@ const mongoURI = process.env.MONGO_URI
 const PORT = process.env.PORT || 3001
 const User = require('./models/User')
 const userData = require('./utilities/data')
+const loginRoute = require('./controllers/User')
 //connecting to my database
 //connecting to MongoDB
 mongoose.connect(mongoURI, { useNewUrlParser: true},
@@ -25,6 +26,8 @@ app.use(express.json()); //use .json(), not .urlencoded()
 app.use(express.static('public')) // we need to tell express to use the public directory for static files... this way our app will find index.html as the route of the application! We can then attach React to that file!
 app.use(cors())
 
+//my api for existing users and registeration
+app.use('/api/users', loginRoute)
 
 
 app.get('/users', async (req,res)=>{

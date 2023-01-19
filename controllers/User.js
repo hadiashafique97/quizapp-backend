@@ -1,4 +1,4 @@
-const router = require('express').Router
+const router = require('express').Router()
 
 const User = require('../../backend/models/User')
 const bcrypt = require('bcryptjs')
@@ -8,8 +8,8 @@ const bcrypt = require('bcryptjs')
 router.post('/register', async (req, res) => {
     try {
         // existing user or not?
-        const userExists = await User.findOne({ email: req.body.email })
-        if (userExists) {
+        const existingUser = await User.findOne({ email: req.body.email })
+        if (existingUser) {
             return res
                 .status(200)
                 .send({ message: "Whoops, Sorry User already exists, try logging in ", success: false })
@@ -24,9 +24,10 @@ router.post('/register', async (req, res) => {
         await newUser.save()
         res.send({
             message: "You have successfully created your User Login",
-            success: true
+            success: true,
         })
     } catch (error) {
+        console.log(error)
         res.status(500).send({
             message: error.message,
             data: error,
