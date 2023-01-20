@@ -58,15 +58,22 @@ router.post('/login', async (req, res) => {
                     if (err) throw err
     
                     //if both match than you can do anything
+                    const token = jwebt.sign(
+                        {userId: User._id},
+                        process.env.JWEBT_SECRET,
+                        {expiresIn: "2d"})
                     if (data) {
-                        return res.status(200).send({ message: "Login success" ,success: true })
+                        return res.status(200).send({ message: "Login successful" ,  success: true, data: token})
                     } else {
                         return res.status(401).send({ message: "Email or password incorrect ", success: false})
                     }
     
                 })
             })
-
+            // const token = jwebt.sign(
+            //     {userId: User._id},
+            //     process.env.JWEBT_SECRET,
+            //     {expiresIn: "2d"})
 
     } catch (error) {
         res.status(500).send({
