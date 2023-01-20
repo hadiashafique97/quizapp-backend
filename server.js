@@ -8,7 +8,7 @@ const mongoURI = process.env.MONGO_URI
 const PORT = process.env.PORT || 3001
 const User = require('./models/User')
 const userData = require('./utilities/data')
-const loginRoute = require('./controllers/User')
+const registerationRoute = require('./controllers/User')
 //connecting to my database
 //connecting to MongoDB
 mongoose.connect(mongoURI, { useNewUrlParser: true},
@@ -27,7 +27,7 @@ app.use(express.static('public')) // we need to tell express to use the public d
 app.use(cors())
 
 //my api for existing users and registeration
-app.use('/api/users', loginRoute)
+app.use('/api/users', registerationRoute)
 
 
 app.get('/users', async (req,res)=>{
