@@ -3,6 +3,7 @@ const router = require('express').Router()
 const User = require('../../backend/models/User')
 const bcrypt = require("bcryptjs")
 const jwebt = require('jsonwebtoken')
+const authenticationMiddleware = require('../middleware/authenticationMiddleware')
 
 //to register your user 
 router.post('/register', async (req, res) => {
@@ -59,7 +60,7 @@ router.post('/login', async (req, res) => {
     
                     //if both match than you can do anything
                     const token = jwebt.sign(
-                        {userId: User._id},
+                        {userId: user._id},
                         process.env.JWEBT_SECRET,
                         {expiresIn: "2d"})
                     if (data) {
@@ -70,10 +71,6 @@ router.post('/login', async (req, res) => {
     
                 })
             })
-            // const token = jwebt.sign(
-            //     {userId: User._id},
-            //     process.env.JWEBT_SECRET,
-            //     {expiresIn: "2d"})
 
     } catch (error) {
         res.status(500).send({
@@ -84,6 +81,23 @@ router.post('/login', async (req, res) => {
     }
 })
 
+// to get the user info 
+router.post('/get-user-info', authenticationMiddleware, async (req,res)=>{
+    try {
+        const user = await User.findById(req.body.userId)
+        res.send({
+            message: "User info fetched Successfuly",
+            success: true, 
+            data: user,
+        })
+    } catch (error) {
+        res.status(500).send({
+            message: error.message,
+            data: error,
+            success: false, 
+        })
+    }
+})
 
 
 
