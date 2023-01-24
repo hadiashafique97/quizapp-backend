@@ -49,7 +49,7 @@ router.post("/get-test-by-id", authenticationMiddleware, async (req, res) => {
     try {
         const test = await Test.findById(req.body.testId).populate("questions")
         res.send({
-            message: "Test CollectedSuccessfully ",
+            message: "Test Collected Successfully ",
             data: test,
             success: true,
         })
