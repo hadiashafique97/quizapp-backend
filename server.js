@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3001
 const User = require('./models/User')
 const userData = require('./utilities/data')
 const registerationRoute = require('./controllers/User')
+const testRoute = require('./controllers/Test')
 //connecting to my database
 //connecting to MongoDB
 mongoose.connect(mongoURI, { useNewUrlParser: true},
@@ -28,7 +29,7 @@ app.use(cors())
 
 //my api for existing users and registeration
 app.use('/api/users', registerationRoute)
-
+app.use('/api/tests', testRoute)
 
 app.get('/users', async (req,res)=>{
     User.find({}, (err, foundUsers)=>{
