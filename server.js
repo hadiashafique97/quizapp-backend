@@ -10,6 +10,7 @@ const User = require('./models/User')
 const userData = require('./utilities/data')
 const registerationRoute = require('./controllers/User')
 const testRoute = require('./controllers/Test')
+const resultsRoute = require("./controllers/Result")
 //connecting to my database
 //connecting to MongoDB
 mongoose.connect(mongoURI, { useNewUrlParser: true},
@@ -30,6 +31,7 @@ app.use(cors({ origin: '*' }))
 //my api for existing users and registeration
 app.use('/api/users', registerationRoute)
 app.use('/api/tests', testRoute)
+app.use('/api/results', resultsRoute)
 
 app.get('/users', async (req,res)=>{
     User.find({}, (err, foundUsers)=>{
