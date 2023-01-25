@@ -16,6 +16,7 @@ const resultSchema = new mongoose.Schema({
 
 }, {
     timestamps: true, 
+    strictPopulate: false, 
 }
 )
 

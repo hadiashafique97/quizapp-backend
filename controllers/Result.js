@@ -24,13 +24,14 @@ router.post("/add-result", authenticationMiddleware, async (req, res) => {
 
 // getting all results 
 
-router.post("/get-all-results", authenticationMiddleware, async(req, res) => {
+router.post("/get-all-results", authenticationMiddleware, async (req, res) => {
     try {
-        const newResult = new Result(req.body)
-        await newResult.save()
+        const results = await Result.find({})
         res.send({
-            message: "Result addedd successfuly",
+            message: "Results fetched successfuly",
             success: true,
+            data: results, 
+            results: results,
         })
     } catch (error) {
         res.status(500).send({
@@ -43,12 +44,12 @@ router.post("/get-all-results", authenticationMiddleware, async(req, res) => {
 
 // get all results by user id 
 
-router.post("/get-all-results-by-user-id", authenticationMiddleware, async(req, res) => {
+router.post("/get-all-results-by-user", authenticationMiddleware, async (req, res) => {
     try {
-        const newResult = new Result(req.body)
-        await newResult.save()
+        const results = await Result.find({ user: req.body.userId}).lean().populate("test").populate("user").sort({createdAt : -1})
         res.send({
-            message: "Result addedd successfuly",
+            message: "Results fetched successfuly",
+            data: results, 
             success: true,
         })
     } catch (error) {
