@@ -26,11 +26,36 @@ router.post("/add-result", authenticationMiddleware, async (req, res) => {
 
 router.post("/get-all-results", authenticationMiddleware, async (req, res) => {
     try {
-        const results = await Result.find({})
+        const { testName, userName } = req.body
+         const users = await User.find({
+            name: {
+                $regex: userName,
+            },
+        })
+        const tests = await Test.find({
+            name: {
+                $regex: testName,
+            },
+        })
+
+       
+        const matchedUserIds = users.map((user) => user._id)
+        const matchedTestIds = tests.map((test) => test._id)
+
+
+        const results = await Result.find({
+            test: {
+                $in: matchedTestIds,
+            },
+            user: {
+                $in: matchedUserIds,
+            },
+
+        }).lean().populate("test").populate("user").sort({ createdAt: -1 })
         res.send({
             message: "Results fetched successfuly",
             success: true,
-            data: results, 
+            data: results,
             results: results,
         })
     } catch (error) {
@@ -46,10 +71,10 @@ router.post("/get-all-results", authenticationMiddleware, async (req, res) => {
 
 router.post("/get-all-results-by-user", authenticationMiddleware, async (req, res) => {
     try {
-        const results = await Result.find({ user: req.body.userId}).lean().populate("test").populate("user").sort({createdAt : -1})
+        const results = await Result.find({ user: req.body.userId }).lean().populate("test").populate("user").sort({ createdAt: -1 })
         res.send({
             message: "Results fetched successfuly",
-            data: results, 
+            data: results,
             success: true,
         })
     } catch (error) {
